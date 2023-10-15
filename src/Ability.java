@@ -1,17 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 abstract public class Ability {
-    int damage;
+    int atk;
     int size;
     int loopCounter;
+    int frame = 0;
     Ability() {
-        damage = 1;
+        atk = 5;
         size = 1;
     }
 
-    abstract public boolean intersects(Rectangle rect);
+    abstract public void attack(Enemy target);
     abstract public void setPosition(int x, int y);
 
     abstract public void draw(Graphics g);
@@ -35,8 +35,14 @@ class DotArea extends Ability {
     }
 
     @Override
-    public boolean intersects(Rectangle rect) {
-        return AOE.intersects(rect);
+    public void attack(Enemy target) {
+        if (AOE.intersects(target.hitBox) && target.isHit()) {
+            if (target.hp > 0) {
+                target.hp -= atk;
+                target.lastHitTime = target.currentTime;
+                System.out.println(target.hp);
+            }
+        };
     }
 
     @Override
@@ -46,7 +52,10 @@ class DotArea extends Ability {
 
     @Override
     public void draw(Graphics g) {
+        g.drawImage(skillImage[frame].getImage(), actor.x - gp.radius, actor.y - gp.radius, gp.radius * size, gp.radius * size, null);
         loopCounter++;
-        System.out.println(loopCounter);
+        if (loopCounter % 3 == 0) {
+            frame = (frame + 1) % skillImage.length;
+        }
     }
 }

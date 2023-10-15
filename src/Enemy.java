@@ -5,32 +5,34 @@ public class Enemy extends Entity{
     gamePanel gp;
     Player py;
     public int width;
-    public int height;
+    ImageIcon image;
+    Rectangle hitBox = new Rectangle();
 
-    Enemy(gamePanel gp, Player py) {
+    Enemy(gamePanel gp) {
         this.gp = gp;
-        this.py = py;
-        reset();
+        this.py = gp.player;
+        super.randomSpawnpoint();
     }
 
-    public void setSpawnpoint(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public void reset() {
-        speed = 2;
-        size = 3;
-        x = -10;
-        y = -10;
-    }
-
-    public void followPlayer() {
+    public void followPlayer(Enemy[] enemies) {
+        hitBox.x = x;
+        hitBox.y = y;
+        hitBox.width = gp.radius;
+        hitBox.height = gp.radius;
+        for (int i = 0; i < enemies.length; i++) {
+            if (enemies[i] != null && enemies[i+1] != null)
+                if (enemies[i].hitBox.intersects(enemies[i+1].hitBox)) {
+                    enemies[i].x++;
+                    enemies[i+1].y++;
+                }
+        }
         if (py.x > x) {
             x += speed;
+            image = image_right;
         }
         if (py.x < x) {
             x -= speed;
+            image = image_left;
         }
         if (py.y > y) {
             y += speed;
@@ -57,6 +59,27 @@ public class Enemy extends Entity{
     }
 
     public void draw(Graphics g) {
+        g.setColor(Color.red);
         g.drawImage(image.getImage(), x, y , gp.radius+width, gp.radius, null);
+        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
+    }
+
+    public void attack(Player target) {
+        if (this.hitBox.intersects(target.hitBox) && target.isHit()) {
+            if (target.hp > 0) {
+                target.hp -= atk;
+                target.lastHitTime = target.currentTime;
+                System.out.println(target.hp);
+            }
+        };
+    }
+
+    public void loop(Enemy[] enemies, int index) {
+        attack(py);
+        followPlayer(enemies);
+        loopAnimation();
+        if (enemies[index].isDied()) {
+            enemies[index] = null;
+        }
     }
 }

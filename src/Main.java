@@ -8,7 +8,7 @@ public class Main {
         frame.setSize(gp.screenWidth+10, gp.screenHeight+40);
         frame.add(gp);
         frame.setTitle("Uncle Survivors");
-        frame.setResizable(true);
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);

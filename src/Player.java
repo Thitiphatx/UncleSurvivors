@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Player extends Entity {
     private final ImageIcon[] player_walk = new ImageIcon[4];
-
+    private final ImageIcon health_icon = new ImageIcon(this.getClass().getResource(""));
     gamePanel gp;
     KeyHandler kh;
     ImageIcon player_image;
@@ -27,22 +27,19 @@ public class Player extends Entity {
     }
 
     public void reset() {
+        hp = 20;
         size = 3;
         speed = 4;
         x = gp.screenWidth / 2;
         y = gp.screenHeight / 2;
     }
-    DotArea test;
+
     Rectangle test2;
     public void walk() {
         hitBox.x = x + hitBoxTrim;
         hitBox.y = y + hitBoxTrim;
         hitBox.width = gp.radius - hitBoxTrim * 2;
         hitBox.height = gp.radius - hitBoxTrim;
-
-        test = new DotArea(gp, this);
-        test2 = new Rectangle(300,300, 100, 100);
-        test.setPosition(x, y);
 
         if (kh.up && y > size + gp.radius/2) {
             y -= speed;
@@ -104,8 +101,7 @@ public class Player extends Entity {
         g.setColor(Color.BLUE);
         g.drawImage(player_image.getImage(), x, y , gp.radius, gp.radius, null);
         g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height); // player hitbox
-        test.draw(g);
-
+        g.drawOval(x - gp.radius, y - gp.radius, gp.radius * size, gp.radius * size);
     }
 }
 
