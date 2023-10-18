@@ -3,6 +3,9 @@ import java.awt.*;
 
 public class UI {
     ImageIcon healthIcon = new ImageIcon(this.getClass().getResource("ui/health.png"));
+    ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("logo.png"));
+    ImageIcon levelupIcon = new ImageIcon(this.getClass().getResource("ui/levelup.png"));
+    ImageIcon levelupSelectIcon = new ImageIcon(this.getClass().getResource("ui/select.png"));
     gamePanel gp;
     Player py;
     UI(gamePanel gp, Player py) {
@@ -10,7 +13,7 @@ public class UI {
        this.py = py;
     }
 
-    public void draw(Graphics g) {
+    public void drawGame(Graphics g) {
         // icon
         g.drawImage(healthIcon.getImage(),  30, 50, gp.radius, gp.radius, null);
         g.setColor(new Color(255, 255, 255));
@@ -39,4 +42,33 @@ public class UI {
 
     }
 
+    int command = 0;
+    public void drawMenu(Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g.drawImage(logoIcon.getImage(),  gp.screenWidth/2 - 500/2, 100, 500, 208, null);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("TimesRoman", Font.BOLD, 36));
+        g.drawString("PLAY", gp.screenWidth/2- 50 ,350);
+        g.drawString("EXIT", gp.screenWidth/2- 50 ,400);
+        if (command == 0) {
+            g.drawString(">", gp.screenWidth/2- 80, 350);
+        }
+        else if (command == 1) {
+            g.drawString(">", gp.screenWidth/2- 80, 400);
+        }
+    }
+    int levelCommand = 0;
+    public void drawLevelUp(Graphics g) {
+        g.drawImage(levelupIcon.getImage(),  0, 0, 1000, 800, null);
+        if (levelCommand == 0) {
+            g.drawImage(levelupSelectIcon.getImage(),  287, 350, 150, 161, null);
+        }
+        else if (levelCommand == 1) {
+            g.drawImage(levelupSelectIcon.getImage(),  422, 350, 150, 161, null);
+        }
+        else {
+            g.drawImage(levelupSelectIcon.getImage(),  557, 350, 150, 161, null);
+        }
+    }
 }

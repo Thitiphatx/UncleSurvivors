@@ -77,7 +77,7 @@ public class Enemy extends Entity{
     }
 
     public void draw(Graphics g) {
-        if (image.getImage() != null) {
+        if (image != null) {
             g.drawImage(image.getImage(), x, y , gp.radius+width, gp.radius, null);
 //        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
             // hp bar
@@ -90,8 +90,5 @@ public class Enemy extends Entity{
     public void loop(Enemy[] enemies, int i) {
         followPlayer(enemies);
         loopAnimation();
-        if (enemies[i].isDied()) {
-            enemies[i] = null;
-        }
     }
 }

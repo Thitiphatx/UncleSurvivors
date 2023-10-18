@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         gamePanel gp = new gamePanel();
-        frame.setSize(gp.screenWidth+10, gp.screenHeight+40);
+        frame.setSize(gp.screenWidth+10, gp.screenHeight+39);
         frame.add(gp);
         frame.setTitle("Uncle Survivors");
         frame.setResizable(false);
