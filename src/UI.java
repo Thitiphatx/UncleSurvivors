@@ -12,7 +12,8 @@ public class UI {
 
     public void draw(Graphics g) {
         g.drawImage(healthIcon.getImage(),  10, 10, gp.radius, gp.radius, null);
+        g.setColor(Color.WHITE);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString(py.hp+"", 100, 50);
+        g.drawString(py.getHealth()+"", 100, 50);
     }
 }

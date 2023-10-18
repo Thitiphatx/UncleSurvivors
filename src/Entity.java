@@ -2,13 +2,16 @@ import javax.swing.*;
 import java.util.Random;
 
 public class Entity {
-    public int hp;
-    public int atk;
-    public int speed;
+    private int hp;
+    private int atk;
+    private int speed;
+
     public int x, y;
-    public int size;
+    public int size = 3;
     public String direction;
     public ImageIcon image_left, image_right;
+
+    // hit Iframe
     final long hitCooldown = 1000;
     long lastHitTime;
     long currentTime;
@@ -16,12 +19,6 @@ public class Entity {
     Entity() {
         lastHitTime = System.currentTimeMillis();
         currentTime = System.currentTimeMillis();
-    }
-
-    public void randomSpawnpoint() {
-        Random rand = new Random();
-        this.x = rand.nextInt(1000);
-        this.y = rand.nextInt(800);
     }
 
     public boolean isHit() {
@@ -36,9 +33,36 @@ public class Entity {
     }
 
     public boolean isDied() {
-        if (hp <= 0) {
+        if (getHealth() <= 0) {
             return true;
         }
         return false;
+    }
+
+    public void setDefaultStatus(int hp, int atk, int speed) {
+        this.hp = hp;
+        this.atk = atk;
+        this.speed = speed;
+    }
+
+
+    // mutator
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+    public void setAtk(int atk) {
+        this.atk = atk;
+    }
+    public int getHealth() {
+        return hp;
+    }
+    public int getAtk() {
+        return atk;
+    }
+    public int getSpeed() {
+        return speed;
     }
 }

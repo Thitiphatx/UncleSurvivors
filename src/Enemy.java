@@ -1,44 +1,53 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Enemy extends Entity{
     gamePanel gp;
     Player py;
-    public int width;
     ImageIcon image;
     Rectangle hitBox = new Rectangle();
+
+    private int width;
 
     Enemy(gamePanel gp) {
         this.gp = gp;
         this.py = gp.player;
-        super.randomSpawnpoint();
+        randomSpawnpoint();
     }
 
-    public void followPlayer(Enemy[] enemies) {
+    public void randomSpawnpoint() {
+        Random rand = new Random();
+        this.x = rand.nextInt(1000);
+        this.y = rand.nextInt(800);
+    }
+
+    public void followPlayer(ArrayList<Enemy> enemies) {
         hitBox.x = x;
         hitBox.y = y;
         hitBox.width = gp.radius;
         hitBox.height = gp.radius;
-        for (int i = 0; i < enemies.length; i++) {
-            if (enemies[i] != null && enemies[i+1] != null)
-                if (enemies[i].hitBox.intersects(enemies[i+1].hitBox)) {
-                    enemies[i].x++;
-                    enemies[i+1].y++;
+        for (int i = 0; i < enemies.size(); i++) {
+            if (enemies.get(i) != null && enemies.get(i+1) != null)
+                if (enemies.get(i).hitBox.intersects(enemies.get(i+1).hitBox)) {
+                    enemies.get(i).x++;
+                    enemies.get(i+1).y++;
                 }
         }
         if (py.x > x) {
-            x += speed;
+            x += getSpeed();
             image = image_right;
         }
         if (py.x < x) {
-            x -= speed;
+            x -= getSpeed();
             image = image_left;
         }
         if (py.y > y) {
-            y += speed;
+            y += getSpeed();
         }
         if (py.y < y) {
-            y -= speed;
+            y -= getSpeed();
         }
     }
 
@@ -58,28 +67,27 @@ public class Enemy extends Entity{
         loopCounter++;
     }
 
+    public void attack(Player player) {
+        if (hitBox.intersects(player.hitBox) && player.isHit()) {
+            if (player.getHealth() > 0) {
+                player.setHp(player.getHealth() - getAtk());
+                player.lastHitTime = player.currentTime;
+                System.out.println(player.getHealth());
+            }
+        };
+    }
+
     public void draw(Graphics g) {
         g.setColor(Color.red);
         g.drawImage(image.getImage(), x, y , gp.radius+width, gp.radius, null);
         g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
     }
 
-    public void attack(Player target) {
-        if (this.hitBox.intersects(target.hitBox) && target.isHit()) {
-            if (target.hp > 0) {
-                target.hp -= atk;
-                target.lastHitTime = target.currentTime;
-                System.out.println(target.hp);
-            }
-        };
-    }
-
-    public void loop(Enemy[] enemies, int index) {
-        attack(py);
+    public void loop(ArrayList<Enemy> enemies, int i) {
         followPlayer(enemies);
         loopAnimation();
-        if (enemies[index].isDied()) {
-            enemies[index] = null;
+        if (enemies.get(i).isDied()) {
+            enemies.remove(i);
         }
     }
 }

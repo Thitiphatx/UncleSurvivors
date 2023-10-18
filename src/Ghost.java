@@ -5,8 +5,6 @@ public class Ghost extends Enemy {
         super(gp);
         image_right = new ImageIcon(this.getClass().getResource("enemy/ghost_0.png"));
         image_left = new ImageIcon(this.getClass().getResource("enemy/ghost_1.png"));
-        hp = 20;
-        speed = 1;
-        atk = 1;
+        setDefaultStatus(20, 1, 1);
     }
 }
