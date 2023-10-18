@@ -29,11 +29,13 @@ public class Enemy extends Entity{
         hitBox.width = gp.radius;
         hitBox.height = gp.radius;
         for (int i = 0; i < enemies.length; i++) {
-            if (enemies[i] != null && enemies[i+1] != null)
+            if (enemies[i] != null && enemies[i+1] != null) {
                 if (enemies[i].hitBox.intersects(enemies[i+1].hitBox)) {
                     enemies[i].x++;
                     enemies[i+1].y++;
                 }
+            }
+
         }
         if (py.x > x) {
             x += speed;

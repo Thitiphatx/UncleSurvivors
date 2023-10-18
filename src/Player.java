@@ -21,17 +21,10 @@ public class Player extends Entity {
     public Player(gamePanel gp, KeyHandler kh) {
         this.gp = gp;
         this.kh = kh;
-        atk = 5;
         level = 0;
         reset();
         initializePlayerWalk();
         player_image = player_walk[0];
-        skills = new ArrayList<>(10);
-//        skills.add(new DotArea(gp, this));
-        skills.add(new BounceBall(gp, this));
-        skills.add(new BounceBall(gp, this));
-        skills.add(new BounceBall(gp, this));
-        skills.add(new DotArea(gp, this));
     }
 
     private void initializePlayerWalk() {
@@ -42,9 +35,14 @@ public class Player extends Entity {
 
     public void reset() {
         setDefaultStatus(20, 1, 4);
+        atk = 1;
         exp = 0;
+        level = 0;
         x = gp.screenWidth / 2;
         y = gp.screenHeight / 2;
+        skills = new ArrayList<>(5);
+        skills.add(new BounceBall(gp, this));
+        skills.add(new DotArea(gp, this));
     }
 
     public void walk() {
@@ -117,8 +115,8 @@ public class Player extends Entity {
             case 1:
                 skills.add(new BounceBall(gp, this));
                 break;
-            case 2:
-                skills.add(new DotArea(gp, this));
+//            case 2:
+//                skills.add(new DotArea(gp, this));
             default:
                 System.out.print("No ID");
         }

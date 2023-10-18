@@ -8,7 +8,7 @@ public class Entity {
     int speed;
 
     public int x, y;
-    public int size = 3;
+    public int size = 1;
     public String direction;
     public ImageIcon image_left, image_right;
 

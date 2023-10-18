@@ -18,10 +18,10 @@ public class KeyHandler implements KeyListener {
         int key = e.getKeyCode();
 
         if (gp.gameState == gp.menuState) {
-            if (key == KeyEvent.VK_UP && gp.ui.command == 1) {
+            if (key == KeyEvent.VK_W && gp.ui.command > 0) {
                 gp.ui.command--;
             }
-            if (key == KeyEvent.VK_DOWN && gp.ui.command == 0) {
+            if (key == KeyEvent.VK_S && gp.ui.command < 1) {
                 gp.ui.command++;
             }
             if (key == KeyEvent.VK_ENTER) {
@@ -32,7 +32,6 @@ public class KeyHandler implements KeyListener {
                     System.exit(0);
                 }
             }
-
         }
         else if (gp.gameState == gp.playState) {
             if (key == KeyEvent.VK_W) {
@@ -49,20 +48,34 @@ public class KeyHandler implements KeyListener {
             }
         }
         else if (gp.gameState == gp.levelUpState) {
+
             if (key == KeyEvent.VK_A && gp.ui.levelCommand > 0) {
                 gp.ui.levelCommand--;
             }
             else if (key == KeyEvent.VK_D && gp.ui.levelCommand < 2) {
                 gp.ui.levelCommand++;
             }
+
             if (key == KeyEvent.VK_ENTER) {
-                switch (gp.ui.levelCommand) {
-                    case 0:
-                        break;
-                    case 1:
-                        break;
-                    case 2:
-                        break;
+                int select = gp.statusManager.statusArr[gp.ui.levelCommand];
+                gp.statusManager.SelectBuff(select);
+                gp.gameState = gp.playState;
+            }
+        }
+        else if (gp.gameState == gp.finishState) {
+            if (key == KeyEvent.VK_W && gp.ui.finishCommand == 1) {
+                gp.ui.finishCommand--;
+            }
+            if (key == KeyEvent.VK_S && gp.ui.finishCommand == 0) {
+                gp.ui.finishCommand++;
+            }
+            if (key == KeyEvent.VK_ENTER) {
+                if (gp.ui.finishCommand == 0) {
+                    gp.resetGame();
+                    gp.gameState = gp.playState;
+                }
+                else {
+                    gp.gameState = gp.menuState;
                 }
             }
         }

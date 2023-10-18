@@ -9,17 +9,19 @@ public class gamePanel extends JPanel {
     public Player player = new Player(this, keyH);
     public Enemy[] enemies = new Enemy[50];
     public UI ui = new UI(this, player);
+    public status statusManager = new status(player);
 
     public final int screenWidth = 1000;
     public final int screenHeight = 800;
     public final int radius = 48;
-    private int currentEnemy = 0;
-    private int gameLevel = 1;
+    public int currentEnemy = 0;
+    public int gameLevel = 1;
 
     public int gameState = 0;
     public final int menuState = 0;
     public final int playState = 1;
     public final int levelUpState = 2;
+    public final int finishState = 3;
 
     gamePanel() {
         this.setBackground(Color.white);
@@ -27,7 +29,6 @@ public class gamePanel extends JPanel {
         this.setFocusable(true);
         this.addKeyListener(keyH);
         setupEnemy(gameLevel);
-        gameState = levelUpState;
         gameThread.start();
     }
 
@@ -42,6 +43,14 @@ public class gamePanel extends JPanel {
             }
         }
     });
+
+    public void resetGame() {
+        player.reset();
+        currentEnemy = 0;
+        gameLevel = 1;
+        enemies = new Enemy[50];
+        setupEnemy(gameLevel);
+    }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -65,6 +74,29 @@ public class gamePanel extends JPanel {
                 currentEnemy++;
             }
         }
+        else if (level == 3) {
+            for (int i = 0; i < 16; i++) {
+                enemies[i] = new Ghost(this);
+                currentEnemy++;
+            }
+        }
+        else if (level == 4) {
+            for (int i = 0; i < 20; i++) {
+                enemies[i] = new Ghost(this);
+                currentEnemy++;
+            }
+        }
+        else if (level == 5) {
+            for (int i = 0; i < 10; i++) {
+                enemies[i] = new Ghost(this);
+                currentEnemy++;
+            }
+            enemies[10] = new Boss(this);
+            currentEnemy++;
+        }
+        else {
+            gameState = finishState;
+        }
 
 
     }
@@ -73,7 +105,12 @@ public class gamePanel extends JPanel {
         player.walk();
         if (player.exp >= 10) {
             player.level++;
+            statusManager.countSelected = 1;
+            gameState = levelUpState;
             player.exp -= 10;
+        }
+        if (player.isDied()) {
+            gameState = finishState;
         }
     }
     public void drawPlayer(Graphics g) {
@@ -119,9 +156,17 @@ public class gamePanel extends JPanel {
             ui.drawGame(g);
             loopEnemy();
             loopPlayer();
+            System.out.println(currentEnemy);
         }
         else if (gameState == levelUpState) {
             ui.drawLevelUp(g);
+            if (statusManager.countSelected == 1) {
+                statusManager.RandomBuff();
+                statusManager.countSelected = 0;
+            }
+        }
+        else if (gameState == finishState) {
+            ui.drawOver(g);
         }
     }
 }
