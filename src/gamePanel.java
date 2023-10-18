@@ -1,8 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class gamePanel extends JPanel {
 
@@ -10,19 +7,21 @@ public class gamePanel extends JPanel {
 
     public KeyHandler keyH = new KeyHandler();
     public Player player = new Player(this, keyH);
-    public ArrayList<Enemy> enemies = new ArrayList<>(10);
+    public Enemy[] enemies = new Enemy[50];
     public UI ui = new UI(this, player);
 
     public final int screenWidth = 1000;
     public final int screenHeight = 800;
     public final int radius = 48;
+    private int currentEnemy = 0;
+    private int gameLevel = 1;
 
     gamePanel() {
         this.setBackground(Color.white);
         this.setSize(screenWidth, screenHeight);
         this.setFocusable(true);
         this.addKeyListener(keyH);
-        setupEnemy();
+        setupEnemy(gameLevel);
         gameThread.start();
     }
 
@@ -49,39 +48,60 @@ public class gamePanel extends JPanel {
         ui.draw(g);
     }
 
-    public void setupEnemy() {
-        enemies.add(new Ghost(this));
-        enemies.add(new Ghost(this));
-        enemies.add(new Ghost(this));
-        enemies.add(new Ghost(this));
-        enemies.add(new Ghost(this));
+    public void setupEnemy(int level) {
+        if (level == 1) {
+            for (int i = 0; i < 6; i++) {
+                enemies[i] = new Slime(this);
+                currentEnemy++;
+            }
+
+        }
+        else if (level == 2) {
+            for (int i = 0; i < 16; i++) {
+                enemies[i] = new Slime(this);
+                if (i > 10) {
+                    enemies[i] = new Ghost(this);
+                }
+                currentEnemy++;
+            }
+        }
+
 
     }
 
     public void loopPlayer() {
         player.walk();
-
-        for (int i = 0; i < enemies.size(); i++) {
-            player.attack(enemies.get(i));
+        if (player.exp >= 10) {
+            player.level++;
+            player.exp -= 10;
         }
-
     }
     public void drawPlayer(Graphics g) {
         player.draw(g);
     }
 
     public void loopEnemy() {
-        for (int i = 0; i < enemies.size(); i++) {
-            if (enemies.get(i) != null) {
-                enemies.get(i).loop(enemies, i);
-                enemies.get(i).attack(player);
+        for (int i = 0; i < enemies.length; i++) {
+            if (enemies[i] != null) {
+                enemies[i].loop(enemies, i);
+                enemies[i].attack(player);
+                player.attack(enemies[i]);
+                if (enemies[i].isDied()) {
+                    player.exp += enemies[i].expDrop;
+                    enemies[i] = null;
+                    currentEnemy--;
+                }
             }
+        }
+        if (currentEnemy == 0) {
+            gameLevel++;
+            setupEnemy(gameLevel);
         }
     }
     public void drawEnemy(Graphics g) {
-        for (int i = 0; i < enemies.size(); i++) {
-            if (enemies.get(i) != null) {
-                enemies.get(i).draw(g);
+        for (int i = 0; i < enemies.length; i++) {
+            if (enemies[i] != null) {
+                enemies[i].draw(g);
             }
         }
     }

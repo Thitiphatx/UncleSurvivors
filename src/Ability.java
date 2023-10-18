@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.util.Random;
+
 abstract public class Ability {
     gamePanel gp;
     Entity actor;
@@ -8,7 +10,7 @@ abstract public class Ability {
     Ellipse2D hitBox;
     int atk;
     int size;
-    int loopCounter;
+    int loopCounter = 0;
     int frame = 0;
     Ability(gamePanel gp, Player actor) {
         this.gp = gp;
@@ -27,44 +29,62 @@ abstract public class Ability {
 }
 
 class DotArea extends Ability {
-    ImageIcon[] skillImage = new ImageIcon[5];
-    Ellipse2D.Double hitBox;
+    ImageIcon[] frameImage = new ImageIcon[10];
+    int hitsize;
     DotArea(gamePanel gp, Player actor) {
         super(gp, actor);
-        atk = 1;
-        hitBox = new Ellipse2D.Double(0, 0, size, size);
-        hitBox.setFrame(actor.x - gp.radius, actor.y - gp.radius, gp.radius, gp.radius);
 
-        for (int i = 0; i < skillImage.length; i++) {
-            skillImage[i] = new ImageIcon(this.getClass().getResource("skill/magic_animation/magic" + i + ".png"));
+        for (int i = 0; i < frameImage.length; i++) {
+            frameImage[i] = new ImageIcon(this.getClass().getResource("skill/magic_animation/magic" + i + ".png"));
         }
-        loopCounter = 0;
-    }
 
+        size = 200;
+        hitsize = size-50;
+        atk = 1;
+
+        hitBox = new Ellipse2D.Double(actor.x, actor.y, size, size);
+        hitBox.setFrame(actor.x - hitsize/2 + gp.radius/2, actor.y - hitsize/2 + gp.radius/2, hitsize, hitsize);
+    }
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(skillImage[frame].getImage(), actor.x - gp.radius, actor.y - gp.radius, gp.radius, gp.radius, null);
+
+        hitBox.setFrame(actor.x - hitsize/2 + gp.radius/2, actor.y - hitsize/2 + gp.radius/2, hitsize, hitsize);
+        g.drawImage(frameImage[frame].getImage(), actor.x - size/2 + gp.radius/2, actor.y - size/2 + gp.radius/2, size, size, null);
+//        g.drawOval(actor.x - hitsize/2 + gp.radius/2, actor.y - hitsize/2 + gp.radius/2, hitsize, hitsize);
+
         loopCounter++;
-        if (loopCounter % 3 == 0) {
-            frame = (frame + 1) % skillImage.length;
+        if (loopCounter % 2 == 0) {
+            frame = (frame + 1) % frameImage.length;
         }
     }
 }
 
-class FireBall extends Ability {
+class BounceBall extends Ability {
     private int x, y;
     private int speedX, speedY;
+    ImageIcon[] frameImage = new ImageIcon[10];
 
-    FireBall(gamePanel gp, Player actor) {
+    BounceBall(gamePanel gp, Player actor) {
         super(gp, actor);
-        hitBox = new Ellipse2D.Double(actor.x, actor.y, size, size);
+
+        for (int i = 0; i < frameImage.length; i++) {
+            frameImage[i] = new ImageIcon(this.getClass().getResource("skill/bounce_animation/bounce" + i + ".png"));
+        }
+
         speedX = 2;
         speedY = 2;
-        size = 20;
+        size = 100;
         atk = 1;
-        x = 0;
-        y = 0;
+        x = randomPosition(1000);
+        y = randomPosition(800);
+        hitBox = new Ellipse2D.Double(actor.x, actor.y, size, size);
+        hitBox.setFrame(actor.x, actor.y, size, size);
+    }
+
+    public int randomPosition(int bound) {
+        Random rand = new Random();
+        return rand.nextInt(bound);
     }
 
     @Override
@@ -76,6 +96,12 @@ class FireBall extends Ability {
         if (y < 0 || y > gp.screenHeight - size)
             speedY *= -1;
 
-        g.drawOval(x, y, size, size);
+        hitBox.setFrame(x, y, size, size);
+        g.drawImage(frameImage[frame].getImage(),x, y, size, size, null);
+
+        loopCounter++;
+        if (loopCounter % 3 == 0) {
+            frame = (frame + 1) % frameImage.length;
+        }
     }
 }

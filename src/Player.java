@@ -16,14 +16,22 @@ public class Player extends Entity {
 
     ArrayList<Ability> skills;
     int exp;
+    int level;
 
     public Player(gamePanel gp, KeyHandler kh) {
         this.gp = gp;
         this.kh = kh;
+        atk = 5;
+        level = 0;
         reset();
         initializePlayerWalk();
         player_image = player_walk[0];
-        skills = new ArrayList<>(2);
+        skills = new ArrayList<>(10);
+//        skills.add(new DotArea(gp, this));
+        skills.add(new BounceBall(gp, this));
+        skills.add(new BounceBall(gp, this));
+        skills.add(new BounceBall(gp, this));
+        skills.add(new DotArea(gp, this));
     }
 
     private void initializePlayerWalk() {
@@ -46,17 +54,17 @@ public class Player extends Entity {
         hitBox.height = gp.radius;
 
         if (kh.up && y > 0) {
-            y -= getSpeed();
+            y -= speed;
         }
         if (kh.down && y < gp.screenHeight - gp.radius) {
-            y += getSpeed();
+            y += speed;
         }
         if (kh.left && x > 0) {
-            x -= getSpeed();
+            x -= speed;
             direction = "left";
         }
         if (kh.right && x < gp.screenWidth - gp.radius) {
-            x += getSpeed();
+            x += speed;
             direction = "right";
         }
         spriteCounter++;
@@ -98,17 +106,16 @@ public class Player extends Entity {
     public void draw(Graphics g) {
         g.setColor(Color.BLUE);
         g.drawImage(player_image.getImage(), x, y, gp.radius, gp.radius, null);
-        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
-
-        g.drawOval(x - gp.radius, y - gp.radius, gp.radius * size, gp.radius * size);
+//        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
+        drawSkills(g);
     }
 
 
-    // skill methods
+//     skill methods
     public void addSkill(int id) {
         switch (id) {
             case 1:
-                skills.add(new FireBall(gp, this));
+                skills.add(new BounceBall(gp, this));
                 break;
             case 2:
                 skills.add(new DotArea(gp, this));
@@ -121,12 +128,14 @@ public class Player extends Entity {
         for (Ability skill : skills) {
             skill.draw(g);
         }
+
     }
 
     public void attack(Enemy enemy) {
-        for (Ability skill : skills) {
-            if (skill.hitBox.intersects(enemy.hitBox)) {
-                enemy.setHp(enemy.getHealth() - skill.getAtk() - getAtk());
+        for (int i = 0; i < skills.size(); i++) {
+
+            if (skills.get(i).hitBox.intersects(enemy.hitBox) && enemy.isHit()) {
+                enemy.hp -= skills.get(i).atk+atk;
             }
         }
     }
