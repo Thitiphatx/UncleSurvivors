@@ -149,6 +149,7 @@ public class gamePanel extends JPanel {
             ui.drawMenu(g);
         }
         else if (gameState == playState) {
+
             g.drawImage(map1_image.getImage(), 0 ,0, screenWidth, screenHeight, this);
             g.setColor(Color.WHITE);
             drawEnemy(g);

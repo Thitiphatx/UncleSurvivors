@@ -26,6 +26,7 @@ public class KeyHandler implements KeyListener {
             }
             if (key == KeyEvent.VK_ENTER) {
                 if (gp.ui.command == 0) {
+                    gp.resetGame();
                     gp.gameState = gp.playState;
                 }
                 else {
