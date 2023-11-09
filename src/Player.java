@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Player extends Entity {
     private final ImageIcon[] player_walk = new ImageIcon[4];
-    private final ImageIcon health_icon = new ImageIcon(this.getClass().getResource(""));
     gamePanel gp;
     KeyHandler kh;
 

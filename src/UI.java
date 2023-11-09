@@ -2,11 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class UI {
-    ImageIcon healthIcon = new ImageIcon(this.getClass().getResource("ui/health.png"));
-    ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("logo.png"));
-    ImageIcon levelupIcon = new ImageIcon(this.getClass().getResource("ui/levelup.png"));
-    ImageIcon levelupSelectIcon = new ImageIcon(this.getClass().getResource("ui/select.png"));
-    ImageIcon finishIcon = new ImageIcon(this.getClass().getResource("ui/finish.png"));
+    private ImageIcon healthIcon = new ImageIcon(this.getClass().getResource("ui/health.png"));
+    private ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("logo.png"));
+    private ImageIcon levelupIcon = new ImageIcon(this.getClass().getResource("ui/levelup.png"));
+    private ImageIcon levelupSelectIcon = new ImageIcon(this.getClass().getResource("ui/select.png"));
+    private ImageIcon finishIcon = new ImageIcon(this.getClass().getResource("ui/finish.png"));
     gamePanel gp;
     Player py;
     UI(gamePanel gp, Player py) {
@@ -21,6 +21,9 @@ public class UI {
         g.setFont(new Font("TimesRoman", Font.BOLD, 24));
         g.drawString(py.level+"", 47, 85);
 
+        g.drawString("Current enemy :"+gp.currentEnemy, 780, 60);
+        g.setColor(new Color(0, 0, 0));
+        g.drawString("Current enemy :"+gp.currentEnemy, 778, 60);
 
         //hp bar
         g.setColor(new Color(34, 40, 49));

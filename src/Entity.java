@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.util.Random;
 
-public class Entity {
+public abstract class Entity {
     int maxhp;
     int hp;
     int atk;

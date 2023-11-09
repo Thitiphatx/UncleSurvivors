@@ -22,8 +22,8 @@ public class status {
             player.atk += 1;
         }
         else if (i == 3) {
-            if (player.hp+5 < player.maxhp) {
-                player.hp += 5;
+            if (player.hp+10 < player.maxhp) {
+                player.hp += 10;
             }
             else {
                 player.hp = 20;

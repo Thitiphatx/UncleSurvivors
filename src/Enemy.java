@@ -5,7 +5,7 @@ import java.util.Random;
 public class Enemy extends Entity{
     gamePanel gp;
     Player py;
-    ImageIcon image;
+    private ImageIcon image;
     Rectangle hitBox = new Rectangle();
 
     private int width;

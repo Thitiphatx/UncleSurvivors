@@ -4,6 +4,8 @@ import java.awt.*;
 public class gamePanel extends JPanel {
 
     private final ImageIcon map1_image = new ImageIcon(this.getClass().getResource("map1.png"));
+    private final ImageIcon map2_image = new ImageIcon(this.getClass().getResource("map2.png"));
+    private ImageIcon currentMap;
 
     public KeyHandler keyH = new KeyHandler(this);
     public Player player = new Player(this, keyH);
@@ -15,7 +17,7 @@ public class gamePanel extends JPanel {
     public final int screenHeight = 800;
     public final int radius = 48;
     public int currentEnemy = 0;
-    public int gameLevel = 1;
+    private int gameLevel = 1;
 
     public int gameState = 0;
     public final int menuState = 0;
@@ -49,6 +51,7 @@ public class gamePanel extends JPanel {
         currentEnemy = 0;
         gameLevel = 1;
         enemies = new Enemy[50];
+        currentMap = map1_image;
         setupEnemy(gameLevel);
     }
 
@@ -93,6 +96,29 @@ public class gamePanel extends JPanel {
             }
             enemies[10] = new Boss(this);
             currentEnemy++;
+        } else if (level == 6) {
+            currentMap = map2_image;
+            for (int i = 0; i < 10; i++) {
+                if (i > 5) {
+                    enemies[i] = new Ball(this);
+                } else {
+                    enemies[i] = new Bat(this);
+                }
+                currentEnemy++;
+            }
+        } else if (level == 7) {
+            for (int i = 0; i < 10; i++) {
+                enemies[i] = new Ball(this);
+                currentEnemy++;
+            }
+        } else if (level == 8) {
+            for (int i = 0; i < 10; i++) {
+                enemies[i] = new Ball(this);
+                currentEnemy++;
+            }
+            enemies[10] = new Boss(this);
+            enemies[11] = new Boss(this);
+            currentEnemy += 2;
         }
         else {
             gameState = finishState;
@@ -150,14 +176,13 @@ public class gamePanel extends JPanel {
         }
         else if (gameState == playState) {
 
-            g.drawImage(map1_image.getImage(), 0 ,0, screenWidth, screenHeight, this);
+            g.drawImage(currentMap.getImage(), 0 ,0, screenWidth, screenHeight, this);
             g.setColor(Color.WHITE);
             drawEnemy(g);
             drawPlayer(g);
             ui.drawGame(g);
             loopEnemy();
             loopPlayer();
-            System.out.println(currentEnemy);
         }
         else if (gameState == levelUpState) {
             ui.drawLevelUp(g);
