@@ -9,6 +9,13 @@ public class KeyHandler implements KeyListener {
 
     public boolean up, down, left, right;
 
+    public void resetDirection() {
+        up = false;
+        down = false;
+        left = false;
+        right = false;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -63,7 +70,7 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.playState;
             }
         }
-        else if (gp.gameState == gp.finishState) {
+        else if (gp.gameState == gp.finishState || gp.gameState == gp.overState) {
             if (key == KeyEvent.VK_W && gp.ui.finishCommand == 1) {
                 gp.ui.finishCommand--;
             }

@@ -17,13 +17,14 @@ public class gamePanel extends JPanel {
     public final int screenHeight = 800;
     public final int radius = 48;
     public int currentEnemy = 0;
-    private int gameLevel = 1;
+    public int gameLevel = 1;
 
     public int gameState = 0;
     public final int menuState = 0;
     public final int playState = 1;
     public final int levelUpState = 2;
-    public final int finishState = 3;
+    public final int overState = 3;
+    public final int finishState = 4;
 
     gamePanel() {
         this.setBackground(Color.white);
@@ -136,7 +137,7 @@ public class gamePanel extends JPanel {
             player.exp -= 10;
         }
         if (player.isDied()) {
-            gameState = finishState;
+            gameState = overState;
         }
     }
     public void drawPlayer(Graphics g) {
@@ -172,10 +173,10 @@ public class gamePanel extends JPanel {
 
     public void playState(Graphics g) {
         if (gameState == menuState) {
+            keyH.resetDirection();
             ui.drawMenu(g);
         }
         else if (gameState == playState) {
-
             g.drawImage(currentMap.getImage(), 0 ,0, screenWidth, screenHeight, this);
             g.setColor(Color.WHITE);
             drawEnemy(g);
@@ -185,14 +186,20 @@ public class gamePanel extends JPanel {
             loopPlayer();
         }
         else if (gameState == levelUpState) {
+            keyH.resetDirection();
             ui.drawLevelUp(g);
             if (statusManager.countSelected == 1) {
                 statusManager.RandomBuff();
                 statusManager.countSelected = 0;
             }
         }
-        else if (gameState == finishState) {
+        else if (gameState == overState) {
+            keyH.resetDirection();
             ui.drawOver(g);
+        }
+        else if (gameState == finishState) {
+            keyH.resetDirection();
+            ui.drawFinish(g);
         }
     }
 }

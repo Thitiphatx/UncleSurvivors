@@ -21,9 +21,15 @@ public class UI {
         g.setFont(new Font("TimesRoman", Font.BOLD, 24));
         g.drawString(py.level+"", 47, 85);
 
-        g.drawString("Current enemy :"+gp.currentEnemy, 780, 60);
         g.setColor(new Color(0, 0, 0));
+        g.drawString("Current enemy :"+gp.currentEnemy, 780, 60);
+        g.setColor(new Color(255, 255, 255));
         g.drawString("Current enemy :"+gp.currentEnemy, 778, 60);
+
+        g.setColor(new Color(0, 0, 0));
+        g.drawString("Wave :"+gp.gameLevel, 780, 80);
+        g.setColor(new Color(255, 255, 255));
+        g.drawString("Wave :"+gp.gameLevel, 778, 80);
 
         //hp bar
         g.setColor(new Color(34, 40, 49));
@@ -52,15 +58,18 @@ public class UI {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
         g.drawImage(logoIcon.getImage(),  gp.screenWidth/2 - 500/2, 100, 500, 208, null);
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("TimesRoman", Font.BOLD, 36));
-        g.drawString("PLAY", gp.screenWidth/2- 50 ,350);
+        g.setColor(Color.GRAY);
+        g.setFont(new Font("Bahnschrift", Font.BOLD, 36));
+
+        g.drawString("PLAY", gp.screenWidth/2- 52 ,350);
         g.drawString("EXIT", gp.screenWidth/2- 50 ,400);
+
+        g.setColor(Color.WHITE);
         if (command == 0) {
-            g.drawString(">", gp.screenWidth/2- 80, 350);
+            g.drawString("PLAY", gp.screenWidth/2- 53 ,350);
         }
         else if (command == 1) {
-            g.drawString(">", gp.screenWidth/2- 80, 400);
+            g.drawString("EXIT", gp.screenWidth/2- 51 ,400);
         }
     }
     int levelCommand = 0;
@@ -83,14 +92,39 @@ public class UI {
         g.drawImage(finishIcon.getImage(),  0, 0, 1000, 800, null);
         g.setColor(Color.WHITE);
         g.setFont(new Font("TimesRoman", Font.BOLD, 36));
-        g.drawString("RESTART", gp.screenWidth/2 - 100,400);
-        g.drawString("EXIT", gp.screenWidth/2 - 100,450);
+        g.drawString("You died", gp.screenWidth/2 - 100,350);
+        g.drawString("Wave :"+gp.gameLevel, gp.screenWidth/2 - 100,400);
+        g.setColor(Color.gray);
+        g.drawString("RESTART", gp.screenWidth/2 - 100,600);
+        g.drawString("EXIT", gp.screenWidth/2 - 60,650);
 
+        g.setColor(Color.WHITE);
         if (finishCommand == 0) {
-            g.drawString(">", gp.screenWidth/2 - 80 - 100, 400);
+
+            g.drawString("RESTART", gp.screenWidth/2 - 98,600);
         }
         else if (finishCommand == 1) {
-            g.drawString(">", gp.screenWidth/2 - 80 - 100, 450);
+            g.drawString("EXIT", gp.screenWidth/2 - 58,650);
+        }
+    }
+
+    public void drawFinish(Graphics g) {
+        g.drawImage(finishIcon.getImage(),  0, 0, 1000, 800, null);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Bahnschrift", Font.BOLD, 36));
+        g.drawString("You finished the game", gp.screenWidth/2 - 200,350);
+        g.drawString("Wave :"+gp.gameLevel, gp.screenWidth/2 - 100,400);
+        g.setColor(Color.gray);
+        g.drawString("RESTART", gp.screenWidth/2 - 100,600);
+        g.drawString("EXIT", gp.screenWidth/2 - 60,650);
+
+        g.setColor(Color.WHITE);
+        if (finishCommand == 0) {
+
+            g.drawString("RESTART", gp.screenWidth/2 - 98,600);
+        }
+        else if (finishCommand == 1) {
+            g.drawString("EXIT", gp.screenWidth/2 - 58,650);
         }
     }
 }

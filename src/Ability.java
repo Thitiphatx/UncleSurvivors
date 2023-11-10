@@ -40,7 +40,7 @@ class DotArea extends Ability {
 
         size = 200;
         hitsize = size-50;
-        atk = 1;
+        atk = 2;
 
         hitBox = new Ellipse2D.Double(actor.x, actor.y, size, size);
         hitBox.setFrame(actor.x - hitsize/2 + gp.radius/2, actor.y - hitsize/2 + gp.radius/2, hitsize, hitsize);
